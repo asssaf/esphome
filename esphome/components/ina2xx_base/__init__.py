@@ -12,6 +12,7 @@ from esphome.const import (
     CONF_SHUNT_RESISTANCE,
     CONF_SHUNT_VOLTAGE,
     CONF_TEMPERATURE,
+    CONF_BOVL,
     DEVICE_CLASS_CURRENT,
     DEVICE_CLASS_ENERGY,
     DEVICE_CLASS_POWER,
@@ -34,6 +35,7 @@ CONF_CHARGE = "charge"
 CONF_CHARGE_COULOMBS = "charge_coulombs"
 CONF_ENERGY_JOULES = "energy_joules"
 CONF_TEMPERATURE_COEFFICIENT = "temperature_coefficient"
+CONF_BOVL = "bus_voltage_over_limit"
 UNIT_AMPERE_HOURS = "Ah"
 UNIT_COULOMB = "C"
 UNIT_JOULE = "J"
@@ -88,6 +90,11 @@ def validate_model_config(config):
     if tempco > 0 and model not in ["INA228", "INA229"]:
         raise cv.Invalid(
             f"Device model '{model}' does not support temperature coefficient"
+        )
+
+    if config.get(CONF_BOVL) and model not in ["INA228", "INA229"]:
+        raise cv.Invalid(
+            f"Device model '{model}' does not support bus voltage over limit"
         )
 
     return config
@@ -193,6 +200,8 @@ INA2XX_SCHEMA = cv.Schema(
             ),
             key=CONF_NAME,
         ),
+        cv.Optional(CONF_BOVL): cv.All(cv.voltage, cv.Range(min=0.0, max=0x7fff * 3.125 / 1000)),
+
     }
 ).extend(cv.polling_component_schema("60s"))
 
@@ -253,3 +262,6 @@ async def setup_ina2xx(var, config):
     if conf := config.get(CONF_CHARGE_COULOMBS):
         sens = await sensor.new_sensor(conf)
         cg.add(var.set_charge_sensor_c(sens))
+
+    if conf := config.get(CONF_BOVL):
+        cg.add(var.set_bus_voltage_over_limit_v(conf))
