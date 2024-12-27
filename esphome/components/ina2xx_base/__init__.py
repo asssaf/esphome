@@ -200,7 +200,7 @@ INA2XX_SCHEMA = cv.Schema(
             key=CONF_NAME,
         ),
         cv.Optional(CONF_BUS_VOLTAGE_OVER_LIMIT): cv.All(
-            cv.voltage, cv.Range(min=0.0, max=0x7fff * 3.125 / 1000)
+            cv.voltage, cv.Range(min=0.0, max=0x7FFF * 3.125 / 1000)
         ),
     }
 ).extend(cv.polling_component_schema("60s"))
