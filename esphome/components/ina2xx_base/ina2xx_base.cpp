@@ -78,7 +78,7 @@ void INA2XX::setup() {
   this->configure_shunt_tempco_();
   delay(1);
 
-  this->configure_bovl_();
+  this->configure_bus_voltage_over_limit_();
   delay(1);
 
   this->state_ = State::IDLE;
@@ -378,7 +378,7 @@ bool INA2XX::configure_shunt_tempco_() {
   return true;
 }
 
-bool INA2XX::configure_bovl_() {
+bool INA2XX::configure_bus_voltage_over_limit_() {
   // Only for 228/229
   if ((this->ina_model_ == INAModel::INA_228 || this->ina_model_ == INAModel::INA_229) && this->bovl_v_ > 0) {
     return this->write_unsigned_16_(RegisterMap::REG_BOVL, (uint16_t) (this->bovl_v_ * 1000 / 3.125));

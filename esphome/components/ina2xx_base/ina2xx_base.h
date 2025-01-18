@@ -151,7 +151,7 @@ class INA2XX : public PollingComponent {
   bool configure_shunt_();
   bool configure_shunt_tempco_();
   bool configure_adc_range_();
-  bool configure_bovl_();
+  bool configure_bus_voltage_over_limit_();
 
   bool read_shunt_voltage_mv_(float &volt_out);
   bool read_bus_voltage_(float &volt_out);
