@@ -380,7 +380,8 @@ bool INA2XX::configure_shunt_tempco_() {
 
 bool INA2XX::configure_bus_voltage_over_limit_() {
   // Only for 228/229
-  if ((this->ina_model_ == INAModel::INA_228 || this->ina_model_ == INAModel::INA_229) && this->bus_voltage_over_limit_v_ > 0) {
+  if ((this->ina_model_ == INAModel::INA_228 || this->ina_model_ == INAModel::INA_229) &&
+      this->bus_voltage_over_limit_v_ > 0) {
     return this->write_unsigned_16_(RegisterMap::REG_BOVL, (uint16_t) (this->bus_voltage_over_limit_v_ * 1000 / 3.125));
   }
   return true;
