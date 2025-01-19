@@ -127,7 +127,7 @@ class INA2XX : public PollingComponent {
   void set_adc_time_die_temperature(AdcTime time) { this->adc_time_die_temperature_ = time; }
   void set_adc_avg_samples(AdcAvgSamples samples) { this->adc_avg_samples_ = samples; }
   void set_shunt_tempco(uint16_t coeff) { this->shunt_tempco_ppm_c_ = coeff; }
-  void set_bus_voltage_over_limit_v(float bovl_v) { this->bovl_v_ = bovl_v; }
+  void set_bus_voltage_over_limit_v(float limit_v) { this->bus_voltage_over_limit_v_ = limit_v; }
 
   void set_shunt_voltage_sensor(sensor::Sensor *sensor) { this->shunt_voltage_sensor_ = sensor; }
   void set_bus_voltage_sensor(sensor::Sensor *sensor) { this->bus_voltage_sensor_ = sensor; }
@@ -174,7 +174,7 @@ class INA2XX : public PollingComponent {
   AdcTime adc_time_die_temperature_{AdcTime::ADC_TIME_4120US};
   AdcAvgSamples adc_avg_samples_{AdcAvgSamples::ADC_AVG_SAMPLES_128};
   uint16_t shunt_tempco_ppm_c_{0};
-  float bovl_v_;
+  float bus_voltage_over_limit_v_;
 
   //
   // Calculated coefficients

@@ -215,7 +215,7 @@ void INA2XX::dump_config() {
   ESP_LOGCONFIG(TAG, "  ADCRANGE = %d (%s)", (uint8_t) this->adc_range_, this->adc_range_ ? "±40.96 mV" : "±163.84 mV");
   ESP_LOGCONFIG(TAG, "  CURRENT_LSB = %f", this->current_lsb_);
   ESP_LOGCONFIG(TAG, "  SHUNT_CAL = %d", this->shunt_cal_);
-  ESP_LOGCONFIG(TAG, "  BOVL = %f V", this->bovl_v_);
+  ESP_LOGCONFIG(TAG, "  BUS_VOLTAGE_OVER_LIMIT = %f V", this->bus_voltage_over_limit_v_);
 
   ESP_LOGCONFIG(TAG, "  ADC Samples = %d; ADC times: Bus = %d μs, Shunt = %d μs, Temp = %d μs",
                 ADC_SAMPLES[0b111 & (uint8_t) this->adc_avg_samples_],
@@ -380,8 +380,8 @@ bool INA2XX::configure_shunt_tempco_() {
 
 bool INA2XX::configure_bus_voltage_over_limit_() {
   // Only for 228/229
-  if ((this->ina_model_ == INAModel::INA_228 || this->ina_model_ == INAModel::INA_229) && this->bovl_v_ > 0) {
-    return this->write_unsigned_16_(RegisterMap::REG_BOVL, (uint16_t) (this->bovl_v_ * 1000 / 3.125));
+  if ((this->ina_model_ == INAModel::INA_228 || this->ina_model_ == INAModel::INA_229) && this->bus_voltage_over_limit_v_ > 0) {
+    return this->write_unsigned_16_(RegisterMap::REG_BOVL, (uint16_t) (this->bus_voltage_over_limit_v_ * 1000 / 3.125));
   }
   return true;
 }
